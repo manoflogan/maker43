@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class Hand implements Comparable<Hand> {
 
-    private List<Card> playingHands = new LinkedList<>();
+    private List<Card> playingCards = new LinkedList<>();
 
     // Returns {@code true} if the hand is a straight flush. Final Value = (isStraight & isFlush)
     private boolean isStraightFlush;
@@ -38,8 +38,8 @@ public class Hand implements Comparable<Hand> {
     }
 
     // Package private only.
-    List<Card> getPlayingHands() {
-        return playingHands;
+    List<Card> getPlayingCards() {
+        return playingCards;
     }
 
     /**
@@ -48,8 +48,8 @@ public class Hand implements Comparable<Hand> {
      * @param cardWeight card weight
      * @param suitType suit type
      */
-    public void addHand(String cardWeight, char suitType) {
-        this.playingHands.add(Card.buildCard(cardWeight, suitType));
+    public void addCard(String cardWeight, char suitType) {
+        this.playingCards.add(Card.buildCard(cardWeight, suitType));
     }
 
     /**
@@ -57,7 +57,7 @@ public class Hand implements Comparable<Hand> {
      */
     public void calculateHandStatus() {
         // First sort by hand value.
-        Collections.sort(this.playingHands);
+        Collections.sort(this.playingCards);
         this.checkHandStatus();
     }
 
@@ -66,7 +66,7 @@ public class Hand implements Comparable<Hand> {
      */
     private void checkHandStatus() {
         // Assume that at least
-        Card firstCard = this.playingHands.get(0);
+        Card firstCard = this.playingCards.get(0);
 
         // Initialise the flags
         this.isThreeOfAKind = true;
@@ -79,8 +79,8 @@ public class Hand implements Comparable<Hand> {
 
         // Used to calculate the pairs.
         int numberOfCardsWithSameRank = 1;
-        while(counter < this.playingHands.size()) {
-            Card otherCard = this.playingHands.get(counter);
+        while(counter < this.playingCards.size()) {
+            Card otherCard = this.playingCards.get(counter);
 
             // Check if three of a kind.
             this.isThreeOfAKind = this.isThreeOfAKind & (
@@ -103,7 +103,8 @@ public class Hand implements Comparable<Hand> {
             if (this.isThreeOfAKind) {
                 numberOfCardsWithSameRank ++;
             } else {
-                numberOfCardsWithSameRank = 1; // Reset
+                numberOfCardsWithSameRank =
+                    numberOfCardsWithSameRank > 1 ? numberOfCardsWithSameRank : 1; // Reset
                 // Checking for the use case when the first does not match, but the second and
                 // the third do.
                 if (firstCard.getCardWeight().getRank().equals(
@@ -154,9 +155,32 @@ public class Hand implements Comparable<Hand> {
         // Get the first element in the list. Since the list is sorted by descending order, the
         // hand with the card as the highest first element wins.
         return -1 * (
-            this.playingHands.get(0).getCardWeight().getPriority() -
-                o.getPlayingHands().get(0).getCardWeight().getPriority());
+            this.playingCards.get(0).getCardWeight().getPriority() -
+                o.getPlayingCards().get(0).getCardWeight().getPriority());
     }
 
+    @Override public String toString() {
+        return new StringBuilder(this.getClass().getSimpleName()).append("[Hand Weight = ")
+            .append(this.handWeight).append(", Cards = ").append(this.getPlayingCards())
+            .append("]").toString();
+    }
 
+    @Override public int hashCode() {
+        int hashCode = 31;
+        hashCode = ((int) this.handWeight ^ 5) + hashCode;
+        return hashCode;
+    }
+
+    @Override public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (!Hand.class.isAssignableFrom(obj.getClass())) {
+            return false;
+        }
+        Hand h = (Hand) obj;
+        return this.handWeight == h.getHandWeight() &&
+            (this.playingCards.get(0).getCardWeight().getPriority() ==
+                h.getPlayingCards().get(0).getCardWeight().getPriority());
+    }
 }

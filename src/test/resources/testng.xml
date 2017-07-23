@@ -1,0 +1,8 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="mark43">
+    <test name="unitests">
+        <classes>
+            <class name="com.krishnanand.mark43.CardTest" />
+        </classes>
+    </test>
+</suite>

@@ -19,8 +19,8 @@ public class Card implements Comparable<Card> {
     }
 
     private Card(String cardWeight, char suitType) {
-        this.cardWeight = CardWeight.CARDS.get(cardWeight);
-        this.suit = Suit.SUITS.get(suitType);
+        this.cardWeight = CardWeight.getCardWeight(cardWeight);
+        this.suit = Suit.getSuit(suitType);
     }
 
 
@@ -60,6 +60,12 @@ public class Card implements Comparable<Card> {
 
     }
 
+    /**
+     * Builds a card of card weight
+     * @param cardWeight
+     * @param suitType
+     * @return
+     */
     public static Card buildCard(String cardWeight, char suitType) {
         return new Card(cardWeight, suitType);
     }
