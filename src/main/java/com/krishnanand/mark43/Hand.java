@@ -151,7 +151,8 @@ public class Hand implements Comparable<Hand> {
 
 
         // We assign the weight for the current hand situation by assigning an arbitrary
-        // differentiating number. This will be used in case there are other card will the same
+        // differentiating number. This will be used in case there are other hands with the same
+        // value.
         if (this.isStraightFlush) {
             this.handWeight = 100;
         } else if (this.isThreeOfAKind) {

@@ -1,7 +1,6 @@
 // Copyright 2017 ManOf Logan. All Rights Reserved.
 package com.krishnanand.mark43;
 
-import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
@@ -33,11 +32,55 @@ public class HandTest {
     }
 
     @Test(dataProviderClass = StaticProviders.class, dataProvider = "highpair")
-    public void testHighPair(Object[] args) throws Exception {
+    public void testHighPairCards(Object[] args) throws Exception {
         this.addCards(args);
         this.hand.calculateHandStatus();
-        this.checkStatusOfCards("isHighCard");
+        this.checkStatusOfCards(50,"isHighCard");
     }
+
+    @Test(dataProviderClass = StaticProviders.class, dataProvider = "threeOfAKind")
+    public void testThreeOfAKindCards(Object[] args) throws Exception {
+        this.addCards(args);
+        this.hand.calculateHandStatus();
+        this.checkStatusOfCards(90, "isThreeOfAKind");
+    }
+
+    @Test(dataProviderClass = StaticProviders.class, dataProvider = "straight")
+    public void testStraightCards(Object[] args) throws Exception {
+        this.addCards(args);
+        this.hand.calculateHandStatus();
+        this.checkStatusOfCards(80, "isStraight");
+    }
+
+    @Test(dataProviderClass = StaticProviders.class, dataProvider = "flush")
+    public void testFlushCards(Object[] args) throws Exception {
+        this.addCards(args);
+        this.hand.calculateHandStatus();
+        this.checkStatusOfCards(70, "isFlush");
+    }
+
+    @Test(dataProviderClass = StaticProviders.class, dataProvider = "firstpair")
+    public void testIsPair_FirstEntry(Object[] args) throws Exception {
+        this.addCards(args);
+        this.hand.calculateHandStatus();
+        this.checkStatusOfCards(60, "isPair");
+    }
+
+    @Test(dataProviderClass = StaticProviders.class, dataProvider = "secondpair")
+    public void testIsPair_SecondEntry(Object[] args) throws Exception {
+        this.addCards(args);
+        this.hand.calculateHandStatus();
+        this.checkStatusOfCards(60, "isPair");
+    }
+
+    @Test(dataProviderClass = StaticProviders.class, dataProvider = "straightflush")
+    public void testStraightFlush(Object[] args) throws Exception {
+        this.addCards(args);
+        this.hand.calculateHandStatus();
+        this.checkStatusOfCards(100, "isStraightFlush", "isStraight", "isFlush");
+    }
+
+
 
     /**
      * Checks the status of card
@@ -45,7 +88,8 @@ public class HandTest {
      * @param args methods for which the output is to return {@true}
      * @throws Exception if methods are not accessible
      */
-    private void checkStatusOfCards(String... args) throws Exception {
+    private void checkStatusOfCards(int handWeight, String... args) throws Exception {
+        Assert.assertEquals(handWeight, this.hand.getHandWeight());
         List<String> methodArgs = Arrays.asList(args);
         String[] methodNames =
             {"isStraightFlush", "isThreeOfAKind", "isStraight", "isFlush", "isPair", "isHighCard"};
@@ -56,7 +100,7 @@ public class HandTest {
             if (methodArgs.contains(methodName)) {
                 Assert.assertTrue(result);
             } else {
-                Assert.assertFalse(result);
+                Assert.assertFalse(result, "The method failed for " + methodName);
             }
         }
 
