@@ -195,6 +195,7 @@ public class Hand implements Comparable<Hand> {
     @Override public int hashCode() {
         int hashCode = 31;
         hashCode = ((int) this.handWeight ^ 5) + hashCode;
+        hashCode = this.playingCards.get(0).hashCode() ^ 3;
         return hashCode;
     }
 
