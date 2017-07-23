@@ -80,8 +80,6 @@ public class HandTest {
         this.checkStatusOfCards(100, "isStraightFlush", "isStraight", "isFlush");
     }
 
-
-
     /**
      * Checks the status of card
      *
@@ -103,7 +101,6 @@ public class HandTest {
                 Assert.assertFalse(result, "The method failed for " + methodName);
             }
         }
-
     }
 
     private void addCards(Object[] args) {

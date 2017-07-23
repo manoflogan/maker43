@@ -33,11 +33,12 @@ public enum Suit {
         return this.suitType;
     }
 
+    private static Suit[] values = Suit.values();
+
     private static final Map<Character, Suit> SUITS = buildSuit();
 
     private static Map<Character, Suit> buildSuit() {
         Map<Character, Suit> suits = new LinkedHashMap<>();
-        Suit[] values = Suit.values();
         for (Suit v : values) {
             suits.put(v.getSuitType(), v);
         }

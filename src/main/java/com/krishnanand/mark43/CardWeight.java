@@ -27,6 +27,8 @@ public enum CardWeight {
 
     private final int priority;
 
+    private static final CardWeight[] values =  CardWeight.values();
+
     private static final Map<String, CardWeight> CARDS = buildPriorityMap();
 
     /**
@@ -35,7 +37,7 @@ public enum CardWeight {
      */
     static Map<String, CardWeight> buildPriorityMap() {
         Map<String, CardWeight> map = new LinkedHashMap<>();
-        for (CardWeight cw : CardWeight.values()) {
+        for (CardWeight cw : values) {
             map.put(cw.getRank(), cw);
         }
         return Collections.unmodifiableMap(map);
@@ -63,5 +65,6 @@ public enum CardWeight {
     public int getPriority() {
         return priority;
     }
+
 
 }
