@@ -34,6 +34,17 @@ public class PlayerTest {
         this.assertPlayingHands("10c 10h 10d", expectedCard);
     }
 
+    @Test
+    public void testAddStraight() throws Exception {
+        List<Card> expectedCard = Arrays.asList(
+            Card.buildCard("Q", 's'),
+            Card.buildCard("J", 'd'),
+            Card.buildCard("10", 'h'));
+        this.assertPlayingHands("10h Jd Qs", expectedCard);
+    }
+
+
+
     private void assertPlayingHands(String hand, List<Card> expected) {
         this.player.buildHand(hand);
         Hand h = this.player.getHand();

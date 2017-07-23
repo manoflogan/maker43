@@ -26,8 +26,8 @@ public class StaticProviders {
     public static Object[][] getStraightCards() {
         // 5h 3c 4d
         return new Object[][] {
-            new Object[]{new Object[] {"5" , 'h'}, new Object[]{"3", 'c'},
-                new Object[]{"4", 'd'}}};
+            new Object[]{new Object[] {"10" , 'h'}, new Object[]{"Q", 'c'},
+                new Object[]{"J", 'd'}}};
     }
 
     @DataProvider(name="flush")

@@ -61,10 +61,11 @@ public class Card implements Comparable<Card> {
     }
 
     /**
-     * Builds a card of card weight
-     * @param cardWeight
-     * @param suitType
-     * @return
+     * Builds a card of card weight.
+     *
+     * @param cardWeight card value; the value can be anyone from "2" to "A"
+     * @param suitType suit type; the value can be either 'c', 'd', 'h', or 's'.
+     * @return card instance
      */
     public static Card buildCard(String cardWeight, char suitType) {
         return new Card(cardWeight, suitType);
