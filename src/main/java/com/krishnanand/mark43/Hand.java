@@ -30,6 +30,32 @@ public class Hand implements Comparable<Hand> {
     // Returns {@code true} if the card does not fall in any category.
     private boolean isHighCard;
 
+    // Exposed for testing purposes only.
+    boolean isStraightFlush() {
+        return isStraightFlush;
+    }
+
+    boolean isThreeOfAKind() {
+        return isThreeOfAKind;
+    }
+
+    boolean isStraight() {
+        return isStraight;
+    }
+
+    boolean isFlush() {
+        return isFlush;
+    }
+
+    boolean isPair() {
+        return isPair;
+    }
+
+    boolean isHighCard() {
+        return isHighCard;
+    }
+    // End exposed for testing purposes.
+
     // Determines the handWeight of the individual. Person with the highest handWeight wins.
     private long handWeight = 0;
 
@@ -120,8 +146,8 @@ public class Hand implements Comparable<Hand> {
         this.isPair = numberOfCardsWithSameRank == 2;
 
         // Fallback.
-        this.isHighCard = !this.isStraightFlush && !this.isThreeOfAKind && !this.isStraightFlush &&
-            !this.isPair;
+        this.isHighCard = !this.isStraightFlush && !this.isThreeOfAKind && !this.isFlush &&
+            !this.isStraight && !this.isPair;
 
 
         // We assign the weight for the current hand situation by assigning an arbitrary
