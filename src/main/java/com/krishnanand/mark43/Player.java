@@ -67,11 +67,14 @@ public class Player implements Comparable<Player> {
         }
         Player p = (Player) obj;
         return this.playerNumber == p.getPlayerNumber() &&
-            this.hand != null && this.hand.equals(p.getHand());
+            this.hand.equals(p.getHand());
     }
 
     @Override public String toString() {
-        return super.toString();
+        StringBuilder sb = new StringBuilder();
+        sb.append(this.getClass().getSimpleName()).append("[Player Number = ").
+            append(this.playerNumber).append(", Hand = ").append(this.hand).append("]").toString();
+        return sb.toString();
     }
 
     /**
