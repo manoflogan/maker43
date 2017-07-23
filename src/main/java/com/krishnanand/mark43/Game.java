@@ -35,8 +35,8 @@ public class Game {
         }
         int playerNumber = Integer.parseInt(String.valueOf(line.trim().charAt(0)), 10);
         Player player = new Player(playerNumber);
-        player.buildHand(line.substring(1));
         this.players.add(player);
+        player.buildHand(line.substring(1));
     }
 
     /**

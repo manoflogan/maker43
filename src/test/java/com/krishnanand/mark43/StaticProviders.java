@@ -24,9 +24,9 @@ public class StaticProviders {
 
     @DataProvider(name="straight")
     public static Object[][] getStraightCards() {
-        // 5h 3c 4d
+
         return new Object[][] {
-            new Object[]{new Object[] {"10" , 'h'}, new Object[]{"Q", 'c'},
+            new Object[]{new Object[] {"T" , 'h'}, new Object[]{"Q", 'c'},
                 new Object[]{"J", 'd'}}};
     }
 
@@ -59,5 +59,12 @@ public class StaticProviders {
         return new Object[][] {
             new Object[]{new Object[] {"4" , 'c'}, new Object[]{"3", 'c'},
                 new Object[]{"5", 'c'}}};
+    }
+
+    @DataProvider(name="playercards")
+    public static Object[][] getPlayerCards() {
+        return new Object[][] {
+            new Object[] {new String[] {"0 Qc Kc 4s", "1 Ah 2c Js", "2 3h 9h Th", "3 Tc 9c 3c"}}
+        };
     }
 }

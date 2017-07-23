@@ -51,13 +51,7 @@ public class Card implements Comparable<Card> {
      * Sort in descending order and then by suit.
      */
     @Override public int compareTo(Card o) {
-        int diff = (o.getCardWeight().getPriority() - this.getCardWeight().getPriority());
-        if (diff == 0) {
-            // Sort by suit.
-            return o.suit.getSuitType() - this.suit.getSuitType();
-        }
-        return diff;
-
+        return (o.getCardWeight().getPriority() - this.getCardWeight().getPriority());
     }
 
     /**

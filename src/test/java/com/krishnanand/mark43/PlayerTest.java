@@ -1,7 +1,6 @@
 // Copyright 2017 ManOf Logan. All Rights Reserved.
 package com.krishnanand.mark43;
 
-import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 import org.testng.Assert;
@@ -19,6 +18,7 @@ public class PlayerTest {
     @BeforeMethod
     public void setUp() throws Exception {
         this.player = new Player(0);
+        Assert.assertEquals(0, this.player.getPlayerNumber());
     }
 
     @AfterMethod
@@ -29,10 +29,10 @@ public class PlayerTest {
     @Test
     public void testAddThreeOfKind() throws Exception {
         List<Card> expectedCard = Arrays.asList(
-            Card.buildCard("10", 'h'),
-            Card.buildCard("10", 'd'),
-            Card.buildCard("10", 'c'));
-        this.assertPlayingHands("10c 10h 10d", expectedCard);
+            Card.buildCard("T", 'c'),
+            Card.buildCard("T", 'h'),
+            Card.buildCard("T", 'd'));
+        this.assertPlayingHands("Tc Th Td", expectedCard);
         Assert.assertTrue(this.player.getHand().isThreeOfAKind());
     }
 
@@ -41,8 +41,8 @@ public class PlayerTest {
         List<Card> expectedCard = Arrays.asList(
             Card.buildCard("Q", 's'),
             Card.buildCard("J", 'd'),
-            Card.buildCard("10", 'h'));
-        this.assertPlayingHands("10h Jd Qs", expectedCard);
+            Card.buildCard("T", 'h'));
+        this.assertPlayingHands("Th Jd Qs", expectedCard);
         Assert.assertTrue(this.player.getHand().isStraight());
     }
 
@@ -51,8 +51,8 @@ public class PlayerTest {
         List<Card> expectedCard = Arrays.asList(
             Card.buildCard("Q", 's'),
             Card.buildCard("J", 's'),
-            Card.buildCard("10", 's'));
-        this.assertPlayingHands("10s Qs Js", expectedCard);
+            Card.buildCard("T", 's'));
+        this.assertPlayingHands("Ts Qs Js", expectedCard);
         Assert.assertTrue(this.player.getHand().isStraightFlush());
     }
 
@@ -69,8 +69,8 @@ public class PlayerTest {
     @Test
     public void testAddPair_FirstScenario() throws Exception {
         List<Card> expectedCard = Arrays.asList(
-            Card.buildCard("A", 's'),
             Card.buildCard("A", 'c'),
+            Card.buildCard("A", 's'),
             Card.buildCard("4", 'h'));
         this.assertPlayingHands("Ac As 4h", expectedCard);
         Assert.assertTrue(this.player.getHand().isPair());
@@ -80,8 +80,8 @@ public class PlayerTest {
     public void testAddPair_SecondScenario() throws Exception {
         List<Card> expectedCard = Arrays.asList(
             Card.buildCard("A", 's'),
-            Card.buildCard("Q", 'd'),
-            Card.buildCard("Q", 'c'));
+            Card.buildCard("Q", 'c'),
+            Card.buildCard("Q", 'd'));
         this.assertPlayingHands("Qc As Qd", expectedCard);
         Assert.assertTrue(this.player.getHand().isPair());
     }

@@ -39,7 +39,7 @@ public class Player implements Comparable<Player> {
         if (line == null || line.isEmpty()) {
             return;
         }
-        String[] cards = line.split(" ");
+        String[] cards = line.trim().split(" ");
         for (String card : cards) {
             // Last character is the suit.
             card = card.trim();
@@ -78,12 +78,16 @@ public class Player implements Comparable<Player> {
     }
 
     /**
-     * The player is ranked on the basis of his hand.
+     * The player is ranked on the basis of his hand, and the player number.
      *
      * @param o player to be ranked
      * @return comparison value
      */
     @Override public int compareTo(Player o) {
-        return this.hand.compareTo(o.getHand());
+        int diff = (int) (this.hand.getHandWeight() - o.getHand().getHandWeight());
+        if (diff == 0) {
+            return this.playerNumber - o.getPlayerNumber();
+        }
+        return diff;
     }
 }
