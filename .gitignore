@@ -1,0 +1,7 @@
+target/
+test-output/
+.DS_Store
+
+# Package Files For Ideal
+.idea
+*.iml
