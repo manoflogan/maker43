@@ -3,7 +3,11 @@ package com.krishnanand.mark43;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.PriorityQueue;
 
 /**
  * An instance of this class represents a single game with multiple players participating.
@@ -14,6 +18,10 @@ public class Game {
 
     public Game() {
         this.players = new ArrayList<>();
+    }
+
+    public List<Player> getPlayers() {
+        return players;
     }
 
     /**
@@ -44,9 +52,34 @@ public class Game {
      *
      * @return winning player
      */
-    public Player determineTheWinner() {
+    public List<Player> determineTheWinner() {
         Collections.sort(this.players);
-        return this.players.get(0);
+        // Many players may have a straight flush with the same hands, but in different suits.
+        Map<String, List<Player>> playerRanking = new LinkedHashMap<>();
+        // KeySort by highest order.
+        PriorityQueue<String> keyQueue = new PriorityQueue<>((o1,  o2) -> {
+            return -1 * (o1.compareTo(o2));
+
+        });
+        for (Player player : this.players) {
+            Hand hand = player.getHand();
+            // The key is a combination of the hand weight, and highest card weight
+            String key =
+                String.format("%d-%d", hand.getHandWeight(),
+                    hand.getPlayingCards().get(0).getCardWeight().getPriority());
+            if (playerRanking.containsKey(key)) {
+                playerRanking.get(key).add(player);
+            } else {
+                List<Player> playerList = new ArrayList<>();
+                playerList.add(player);
+                playerRanking.put(key, playerList);
+            }
+            if (!keyQueue.contains(key)) {
+                keyQueue.add(key);
+            }
+
+        }
+        return playerRanking.get(keyQueue.poll());
     }
 
 

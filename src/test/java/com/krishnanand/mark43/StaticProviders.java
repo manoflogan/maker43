@@ -61,7 +61,7 @@ public class StaticProviders {
                 new Object[]{"5", 'c'}}};
     }
 
-    @DataProvider(name="playercards")
+    @DataProvider(name="2winnercards")
     public static Object[][] getPlayerCards() {
         return new Object[][] {
             new Object[] {new String[] {"0 Qc Kc 4s", "1 Ah 2c Js", "2 3h 9h Th", "3 Tc 9c 3c"}}

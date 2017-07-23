@@ -43,7 +43,7 @@ public class Card implements Comparable<Card> {
     }
 
     @Override public String toString() {
-        return new StringBuilder(this.getClass().getSimpleName()).append("Card Weight = ").
+        return new StringBuilder(this.getClass().getSimpleName()).append("[Weight = ").
             append(this.cardWeight).append(", Suit = ").append(this.suit).append("]").toString();
     }
 

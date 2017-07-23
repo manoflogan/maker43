@@ -84,8 +84,15 @@ public class Player implements Comparable<Player> {
      * @return comparison value
      */
     @Override public int compareTo(Player o) {
-        int diff = (int) (this.hand.getHandWeight() - o.getHand().getHandWeight());
+        int diff = (int) (-1 * (this.hand.getHandWeight() - o.getHand().getHandWeight()));
         if (diff == 0) {
+            // Sort by card of highest priority.
+            int cardWeight =
+                -1 * (this.hand.getPlayingCards().get(0).getCardWeight().getPriority() -
+                    o.getHand().getPlayingCards().get(0).getCardWeight().getPriority());
+            if (cardWeight != 0) {
+                return cardWeight;
+            }
             return this.playerNumber - o.getPlayerNumber();
         }
         return diff;
