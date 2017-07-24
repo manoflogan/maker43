@@ -1,5 +1,8 @@
 "Mark43 Poker" Judger
 =====================
+[![Build
+Status](https://travis-ci.org/manoflogan/maker43.png)](https://travis-ci
+.org/manoflogan/maker43)
 
 Your task is to implement a program that accepts as its input a collection of hands of cards, and selects the winner from among those hands.
 
