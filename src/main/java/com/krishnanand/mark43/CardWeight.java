@@ -17,7 +17,7 @@ public enum CardWeight {
     SEVEN("7", 6),
     EIGHT("8", 7),
     NINE("9", 8),
-    TEN("10", 9),
+    TEN("T", 9),
     JACK("J", 10),
     QUEEN("Q", 11),
     KING("K", 12),

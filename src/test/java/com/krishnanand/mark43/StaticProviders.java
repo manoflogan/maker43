@@ -24,10 +24,10 @@ public class StaticProviders {
 
     @DataProvider(name="straight")
     public static Object[][] getStraightCards() {
-        // 5h 3c 4d
+
         return new Object[][] {
-            new Object[]{new Object[] {"5" , 'h'}, new Object[]{"3", 'c'},
-                new Object[]{"4", 'd'}}};
+            new Object[]{new Object[] {"T" , 'h'}, new Object[]{"Q", 'c'},
+                new Object[]{"J", 'd'}}};
     }
 
     @DataProvider(name="flush")
@@ -59,5 +59,26 @@ public class StaticProviders {
         return new Object[][] {
             new Object[]{new Object[] {"4" , 'c'}, new Object[]{"3", 'c'},
                 new Object[]{"5", 'c'}}};
+    }
+
+    @DataProvider(name="2winnercards")
+    public static Object[][] getTwoWinnerPlayerCards() {
+        return new Object[][] {
+            new Object[] {new String[] {"0 Qc Kc 4s", "1 Ah 2c Js", "2 3h 9h Th", "3 Tc 9c 3c"}}
+        };
+    }
+
+    @DataProvider(name="1winnercards")
+    public static Object[][] getOnePlayerCards() {
+        return new Object[][] {
+            new Object[] {new String[] {"0 2c As 4d", "1 Kd 5h 6c" , "2 Jc Jd 9s"}}
+        };
+    }
+
+    @DataProvider(name="highCardWinner")
+    public static Object[][] highCardWinner() {
+        return new Object[][] {
+            new Object[] {new String[] {"0 Kh 4d 3c", "1 Jd 5c 7s", "2 9s 3h 2d"}}
+        };
     }
 }

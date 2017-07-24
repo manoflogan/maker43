@@ -1,6 +1,7 @@
 // Copyright 2017 ManOf Logan. All Rights Reserved.
 package com.krishnanand.mark43;
 
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -59,7 +60,15 @@ public class ThreeCardPoker {
             game.addPlayer(line);
             counter ++;
         }
-        Player player = game.determineTheWinner();
-        System.out.println(player.getPlayerNumber());
+        List<Player> players =  game.determineTheWinner();
+        int s = players.size();
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < s; i++) {
+            sb.append(players.get(i).getPlayerNumber());
+            if (i < (s - 1)) {
+                sb.append(" ");
+            }
+        }
+        System.out.println(sb.toString());
     }
 }

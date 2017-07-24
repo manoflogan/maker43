@@ -43,7 +43,7 @@ public class Card implements Comparable<Card> {
     }
 
     @Override public String toString() {
-        return new StringBuilder(this.getClass().getSimpleName()).append("Card Weight = ").
+        return new StringBuilder(this.getClass().getSimpleName()).append("[Weight = ").
             append(this.cardWeight).append(", Suit = ").append(this.suit).append("]").toString();
     }
 
@@ -51,20 +51,15 @@ public class Card implements Comparable<Card> {
      * Sort in descending order and then by suit.
      */
     @Override public int compareTo(Card o) {
-        int diff = (o.getCardWeight().getPriority() - this.getCardWeight().getPriority());
-        if (diff == 0) {
-            // Sort by suit.
-            return o.suit.getSuitType() - this.suit.getSuitType();
-        }
-        return diff;
-
+        return (o.getCardWeight().getPriority() - this.getCardWeight().getPriority());
     }
 
     /**
-     * Builds a card of card weight
-     * @param cardWeight
-     * @param suitType
-     * @return
+     * Builds a card of card weight.
+     *
+     * @param cardWeight card value; the value can be anyone from "2" to "A"
+     * @param suitType suit type; the value can be either 'c', 'd', 'h', or 's'.
+     * @return card instance
      */
     public static Card buildCard(String cardWeight, char suitType) {
         return new Card(cardWeight, suitType);

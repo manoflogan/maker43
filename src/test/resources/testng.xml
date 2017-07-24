@@ -5,6 +5,7 @@
             <class name="com.krishnanand.mark43.CardTest" />
             <class name="com.krishnanand.mark43.HandTest" />
             <class name="com.krishnanand.mark43.PlayerTest" />
+            <class name="com.krishnanand.mark43.GameTest" />
         </classes>
     </test>
 </suite>

@@ -39,7 +39,7 @@ public class Player implements Comparable<Player> {
         if (line == null || line.isEmpty()) {
             return;
         }
-        String[] cards = line.split(" ");
+        String[] cards = line.trim().split(" ");
         for (String card : cards) {
             // Last character is the suit.
             card = card.trim();
@@ -67,20 +67,34 @@ public class Player implements Comparable<Player> {
         }
         Player p = (Player) obj;
         return this.playerNumber == p.getPlayerNumber() &&
-            this.hand != null && this.hand.equals(p.getHand());
+            this.hand.equals(p.getHand());
     }
 
     @Override public String toString() {
-        return super.toString();
+        StringBuilder sb = new StringBuilder();
+        sb.append(this.getClass().getSimpleName()).append("[Player Number = ").
+            append(this.playerNumber).append(", Hand = ").append(this.hand).append("]").toString();
+        return sb.toString();
     }
 
     /**
-     * The player is ranked on the basis of his hand.
+     * The player is ranked on the basis of his hand, and the player number.
      *
      * @param o player to be ranked
      * @return comparison value
      */
     @Override public int compareTo(Player o) {
-        return this.hand.compareTo(o.getHand());
+        int diff = (int) (-1 * (this.hand.getHandWeight() - o.getHand().getHandWeight()));
+        if (diff == 0) {
+            // Sort by card of highest priority.
+            int cardWeight =
+                -1 * (this.hand.getPlayingCards().get(0).getCardWeight().getPriority() -
+                    o.getHand().getPlayingCards().get(0).getCardWeight().getPriority());
+            if (cardWeight != 0) {
+                return cardWeight;
+            }
+            return this.playerNumber - o.getPlayerNumber();
+        }
+        return diff;
     }
 }
