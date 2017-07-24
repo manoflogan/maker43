@@ -57,6 +57,7 @@ public class ThreeCardPokerTest {
                 break;
             }
             Assert.assertEquals(winningPlayers.size(), strs.length);
+            this.threeCardPoker.displayResults(winningPlayers);
             for (int i = 0; i < strs.length; i++) {
                 try {
                     int n = Integer.parseInt(strs[i], 10);
