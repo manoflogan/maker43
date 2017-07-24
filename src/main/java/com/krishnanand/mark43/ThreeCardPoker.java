@@ -1,24 +1,134 @@
 // Copyright 2017 ManOf Logan. All Rights Reserved.
 package com.krishnanand.mark43;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
 /**
  * An entry class representing the simulation of the three card poker.
+ *
+ * <p>The implementation requires the command line argument representing the input directory. The
+ * implementation will iterate through each file of the directory to run the poker game.
+ *
+ * <p>To play the game, the following command must be executed
+ * {@code java ThreeCard <filedirectory>} or {@code java -jar <jar-file> test}.
  */
 public class ThreeCardPoker {
 
     public static void main(String[] args) {
-        try(Scanner scanner = new Scanner(System.in)) {
-            ThreeCardPoker poker = new ThreeCardPoker();
-            List<Player> winningPlayers = poker.playGame(scanner);
-            poker.displayResults(winningPlayers);
+        initiate(args);
+    }
+
+
+    /**
+     * Checks if the command line arguments are available
+     *
+     * @param commandlineArgs array of command line arguments
+     * @return {@code true} if the arguments are not null; false otherwise
+     */
+    static boolean isValid(String[] commandlineArgs) {
+        if (commandlineArgs == null || commandlineArgs.length == 0) {
+            throw new IllegalArgumentException(
+                "The implementation requires a file directory as an argument.");
+        }
+        return true;
+    }
+
+    /**
+     * Returns the list of files from a fully qualified directory path.
+     *
+     * @param file fully qualified directory path
+     * @return list of file names
+     */
+    static List<String> getFileListFromDirectory(String file) {
+        File f = new File(file);
+        if (f.isDirectory()) {
+            String[] files = f.list();
+            if (files == null || files.length == 0) {
+                return Collections.emptyList();
+            }
+            return Arrays.asList(files);
+        }
+        return Collections.emptyList();
+    }
+
+    /**
+     * Initiates the game.
+     *
+     * @param args array of directory paths containing test files relative to the location of the
+     *             archive
+     * @return {@code true} if the game can be initiated
+     * @exception GameNotPlayedException if the arguments are invalid
+     */
+     static boolean initiate(String[] args) {
+        if (isValid(args)) {
+
+            List<String> filePaths = new ArrayList<>();
+            for (String directoryPath : args) {
+                String filePath = new StringBuilder(System.getProperty("user.dir")).append("/")
+                    .append(directoryPath).toString();
+                List<String> allFiles = getFileListFromDirectory(filePath);
+                for (String file : allFiles) {
+                    filePaths.add(filePath + "/" + file);
+                }
+            }
+            ThreeCardPoker threeCardPoker = new ThreeCardPoker();
+            for (String filePath : filePaths) {
+                threeCardPoker.startTheGame(filePath);
+            }
+            return true;
+        }
+        throw new GameNotPlayedException();
+    }
+
+    /**
+     * Starts the game.
+     *
+     * @param filePath path relative to the file
+     * @return {@code true} if the game is completed
+     * @exception PokerFileNotFoundException if there is an IO error when reading the file
+     */
+    boolean startTheGame(String filePath) {
+        // The assumption is that the directory
+        try(InputStream is = this.loadContentsFromFilePath(filePath);
+            Scanner scanner = new Scanner(is);) {
+            List<Player> winningPlayers = this.playGame(scanner);
+            this.displayResults(winningPlayers);
+            return true;
+        } catch (IOException e) {
+            throw new PokerFileNotFoundException(filePath, e);
         }
     }
 
     /**
-     * Calls the game. T
+     * Generates the input stream of the file content represented by the file path.
+     *
+     * <p>The function is not responsible for closing the inputstream after it is no longer needed.
+     * That responsibility falls on invoking function.
+     *
+     * @param filePath fully qualified path of the file to be read
+     * @return input stream
+     * @exception  PokerFileNotFoundException if the file can not be found any reason
+     */
+    InputStream loadContentsFromFilePath(String filePath) {
+        try {
+            return new BufferedInputStream(new FileInputStream(filePath));
+        } catch (IOException e) {
+            throw new PokerFileNotFoundException(filePath, e);
+        }
+    }
+
+    /**
+     * Calls the game.
      *
      * <p>The input is always in the following format as given below:
      *  <ul>
@@ -39,9 +149,13 @@ public class ThreeCardPoker {
      * represents the player's hand. In this example, the player has the two of clubs, Ace of
      * spades, and four of diamonds. Similarly player 1 and player 2 have the king of diamonds, five
      * of hearts, and 6 of clubs, and Jack of clubs, Jack of diamonds, and nine of spaces
-     * respectively.</p>
+     * respectively.
+     *
+     * <p>The implementation is not responsible for the closing of any IO resources. That is the
+     * responsibility of the invoking function
      *
      * @param scanner scanner to read values
+     * @return list of objects representing the winning player
      */
     List<Player> playGame(Scanner scanner) {
         boolean isValidInputFound = false;
@@ -77,9 +191,14 @@ public class ThreeCardPoker {
             counter ++;
         }
         List<Player> players =  game.determineTheWinner();
-        return players;
+        return Collections.unmodifiableList(players);
     }
 
+    /**
+     * Display the player numbers of a list of players.
+     *
+     * @param players list of players
+     */
     void displayResults(List<Player> players) {
         int s = players.size();
         StringBuilder sb = new StringBuilder();
