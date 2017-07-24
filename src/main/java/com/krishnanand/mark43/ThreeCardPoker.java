@@ -189,7 +189,7 @@ public class ThreeCardPoker {
 
     void displayResults(List<Player> players) {
         int s = players.size();
-        StringBuilder sb = new StringBuilder("Winning Player(s) : ");
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < s; i++) {
             sb.append(players.get(i).getPlayerNumber());
             if (i < (s - 1)) {
