@@ -55,11 +55,11 @@ public class Game {
     public List<Player> determineTheWinner() {
         Collections.sort(this.players);
         // Many players may have a straight flush with the same hands, but in different suits.
-        Map<OrderOfWinners, List<Player>> playerRanking = new LinkedHashMap<>();
+        Map<OrderOfPlayers, List<Player>> playerRanking = new LinkedHashMap<>();
         // KeySort by highest order. I could use a priority queue, but it is not giving the correct
         // answer for all high pair values.
-        PriorityQueue<OrderOfWinners> keyQueue = new PriorityQueue<>(new Comparator<OrderOfWinners>() {
-            @Override public int compare(OrderOfWinners o1, OrderOfWinners o2) {
+        PriorityQueue<OrderOfPlayers> keyQueue = new PriorityQueue<>(new Comparator<OrderOfPlayers>() {
+            @Override public int compare(OrderOfPlayers o1, OrderOfPlayers o2) {
                 int handWeight = -1 * ((int) (o1.getHandWeight() - o2.getHandWeight()));
                 if (handWeight != 0) {
                     return handWeight;
@@ -70,8 +70,8 @@ public class Game {
         for (Player player : this.players) {
             Hand hand = player.getHand();
             // The key is a combination of the hand weight, and highest card weight
-            OrderOfWinners order =
-                new OrderOfWinners(
+            OrderOfPlayers order =
+                new OrderOfPlayers(
                     hand.getHandWeight(),
                     hand.getPlayingCards().get(0).getCardWeight().getPriority());
 
@@ -99,15 +99,15 @@ public class Game {
 
     /**
      * An instance of this class encapsulates the ranking and priority of the card to be used
-     * to determine the winnders.
+     * to determine the winners.
      */
-    static class OrderOfWinners {
+    static class OrderOfPlayers {
 
         private final long handWeight;
 
         private final int priority;
 
-        OrderOfWinners(long handWeight, int priority) {
+        OrderOfPlayers(long handWeight, int priority) {
             this.handWeight = handWeight;
             this.priority = priority;
         }
@@ -137,10 +137,10 @@ public class Game {
             if (obj == null) {
                 return false;
             }
-            if (!OrderOfWinners.class.isAssignableFrom(obj.getClass())) {
+            if (!OrderOfPlayers.class.isAssignableFrom(obj.getClass())) {
                 return false;
             }
-            OrderOfWinners ow = (OrderOfWinners) obj;
+            OrderOfPlayers ow = (OrderOfPlayers) obj;
             return this.handWeight == ow.getHandWeight() && this.priority == ow.getPriority();
         }
     }
