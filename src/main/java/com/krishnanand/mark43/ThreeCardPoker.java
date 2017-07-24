@@ -209,6 +209,4 @@ public class ThreeCardPoker {
         }
         System.out.println(sb.toString());
     }
-
-
 }
