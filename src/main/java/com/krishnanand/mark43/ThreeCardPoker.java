@@ -94,7 +94,8 @@ public class ThreeCardPoker {
      * Starts the game.
      *
      * @param filePath path relative to the file
-     * @return {@code true} if the game is completed.
+     * @return {@code true} if the game is completed
+     * @exception PokerFileNotFoundException if there is an IO error when reading the file
      */
     boolean startTheGame(String filePath) {
         // The assumption is that the directory
