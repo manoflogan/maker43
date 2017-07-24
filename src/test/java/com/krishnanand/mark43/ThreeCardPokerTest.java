@@ -32,9 +32,19 @@ public class ThreeCardPokerTest {
                 ClassLoader.getSystemResourceAsStream("PairFile.txt");
                 Scanner scanner = new Scanner(is);) {
             List<Player> winningPlayers =  this.threeCardPoker.playGame(scanner);
+            // Get the output from the file.
+            int n = 100; // Arbitarily large number.
+            while(scanner.hasNext()) {
+                try {
+                    n = Integer.parseInt(scanner.nextLine(), 10);
+                    break;
+                } catch (NumberFormatException nfe) {
+                    // Ignore.
+                }
+            }
             Assert.assertEquals(winningPlayers.size(), 1);
             Player player = winningPlayers.get(0);
-            Assert.assertEquals(player.getPlayerNumber(), 2);
+            Assert.assertEquals(player.getPlayerNumber(), n);
             Assert.assertEquals(player.getHand().getHandWeight(), 60);
             List<Card> cards = player.getHand().getPlayingCards();
             Card firstCard = cards.get(0);
