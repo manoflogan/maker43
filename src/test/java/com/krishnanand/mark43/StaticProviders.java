@@ -62,9 +62,23 @@ public class StaticProviders {
     }
 
     @DataProvider(name="2winnercards")
-    public static Object[][] getPlayerCards() {
+    public static Object[][] getTwoWinnerPlayerCards() {
         return new Object[][] {
             new Object[] {new String[] {"0 Qc Kc 4s", "1 Ah 2c Js", "2 3h 9h Th", "3 Tc 9c 3c"}}
+        };
+    }
+
+    @DataProvider(name="1winnercards")
+    public static Object[][] getOnePlayerCards() {
+        return new Object[][] {
+            new Object[] {new String[] {"0 2c As 4d", "1 Kd 5h 6c" , "2 Jc Jd 9s"}}
+        };
+    }
+
+    @DataProvider(name="highCardWinner")
+    public static Object[][] highCardWinner() {
+        return new Object[][] {
+            new Object[] {new String[] {"0 Kh 4d 3c", "1 Jd 5c 7s", "2 9s 3h 2d"}}
         };
     }
 }

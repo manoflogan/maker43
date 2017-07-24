@@ -55,36 +55,93 @@ public class Game {
     public List<Player> determineTheWinner() {
         Collections.sort(this.players);
         // Many players may have a straight flush with the same hands, but in different suits.
-        Map<String, List<Player>> playerRanking = new LinkedHashMap<>();
-        // KeySort by highest order.
-        PriorityQueue<String> keyQueue = new PriorityQueue<>((o1,  o2) -> {
-            return -1 * (o1.compareTo(o2));
-
+        Map<OrderOfWinners, List<Player>> playerRanking = new LinkedHashMap<>();
+        // KeySort by highest order. I could use a priority queue, but it is not giving the correct
+        // answer for all high pair values.
+        PriorityQueue<OrderOfWinners> keyQueue = new PriorityQueue<>(new Comparator<OrderOfWinners>() {
+            @Override public int compare(OrderOfWinners o1, OrderOfWinners o2) {
+                int handWeight = -1 * ((int) (o1.getHandWeight() - o2.getHandWeight()));
+                if (handWeight != 0) {
+                    return handWeight;
+                }
+                return -1 * (o1.getPriority() - o2.getPriority());
+            }
         });
         for (Player player : this.players) {
             Hand hand = player.getHand();
             // The key is a combination of the hand weight, and highest card weight
-            String key =
-                String.format("%d-%d", hand.getHandWeight(),
+            OrderOfWinners order =
+                new OrderOfWinners(
+                    hand.getHandWeight(),
                     hand.getPlayingCards().get(0).getCardWeight().getPriority());
-            if (playerRanking.containsKey(key)) {
-                playerRanking.get(key).add(player);
+
+            if (playerRanking.containsKey(order)) {
+                playerRanking.get(order).add(player);
             } else {
                 List<Player> playerList = new ArrayList<>();
                 playerList.add(player);
-                playerRanking.put(key, playerList);
+                playerRanking.put(order, playerList);
             }
-            if (!keyQueue.contains(key)) {
-                keyQueue.add(key);
+            if (!keyQueue.contains(order)) {
+                keyQueue.add(order);
             }
 
         }
+
         return playerRanking.get(keyQueue.poll());
     }
 
 
     @Override public String toString() {
         return new StringBuilder(this.getClass().getSimpleName()).
-            append("Players = ").append(this.players).append("]").toString();
+            append("[Players = ").append(this.players).append("]").toString();
+    }
+
+    /**
+     * An instance of this class encapsulates the ranking and priority of the card to be used
+     * to determine the winnders.
+     */
+    static class OrderOfWinners {
+
+        private final long handWeight;
+
+        private final int priority;
+
+        OrderOfWinners(long handWeight, int priority) {
+            this.handWeight = handWeight;
+            this.priority = priority;
+        }
+
+        public long getHandWeight() {
+            return handWeight;
+        }
+
+        public int getPriority() {
+            return priority;
+        }
+
+        @Override public String toString() {
+            return new StringBuilder(this.getClass().getSimpleName()).append("[Weight = ").
+                append(this.handWeight).append(", Priority = ").append(this.priority).append("]").
+                toString();
+        }
+
+        @Override public int hashCode() {
+            int hashCode = 31;
+            hashCode = (int) this.handWeight ^ 5 + hashCode;
+            hashCode = hashCode + this.priority ^ 3;
+            return hashCode;
+        }
+
+        @Override public boolean equals(Object obj) {
+            if (obj == null) {
+                return false;
+            }
+            if (!OrderOfWinners.class.isAssignableFrom(obj.getClass())) {
+                return false;
+            }
+            OrderOfWinners ow = (OrderOfWinners) obj;
+            return this.handWeight == ow.getHandWeight() && this.priority == ow.getPriority();
+        }
     }
 }
