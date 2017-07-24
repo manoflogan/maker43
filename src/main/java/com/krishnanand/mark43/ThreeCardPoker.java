@@ -43,6 +43,12 @@ public class ThreeCardPoker {
         return true;
     }
 
+    /**
+     * Returns the list of files from a fully qualified directory path.
+     *
+     * @param file fully qualified directory path
+     * @return list of file names
+     */
     static List<String> getFileListFromDirectory(String file) {
         File f = new File(file);
         if (f.isDirectory()) {
@@ -187,6 +193,11 @@ public class ThreeCardPoker {
         return Collections.unmodifiableList(players);
     }
 
+    /**
+     * Display the player numbers of a list of players.
+     *
+     * @param players list of players
+     */
     void displayResults(List<Player> players) {
         int s = players.size();
         StringBuilder sb = new StringBuilder();
