@@ -1,6 +1,7 @@
 // Copyright 2017 ManOf Logan. All Rights Reserved.
 package com.krishnanand.mark43;
 
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -12,7 +13,8 @@ public class ThreeCardPoker {
     public static void main(String[] args) {
         try(Scanner scanner = new Scanner(System.in)) {
             ThreeCardPoker poker = new ThreeCardPoker();
-            poker.playGame(scanner);
+            List<Player> winningPlayers = poker.playGame(scanner);
+            poker.displayResults(winningPlayers);
         }
     }
 
@@ -42,10 +44,25 @@ public class ThreeCardPoker {
      *
      * @param scanner scanner to read values
      */
-    void playGame(Scanner scanner) {
+    List<Player> playGame(Scanner scanner) {
+        boolean isValidInputFound = false;
+        // The input files have certain on top which need to be ignored.
+        // Continue until the value input is reached.
+        int numberOfPlayers = 0;
+        while (!isValidInputFound) {
+            try {
+                String n = scanner.nextLine();
+                numberOfPlayers = Integer.parseInt(n);
+                isValidInputFound = true;
+                break;
+            } catch (NumberFormatException ime) {
+                // Invalid input. Ignore.
+                continue;
+            }
+        }
 
         // Extract the number of players
-        int numberOfPlayers = scanner.nextInt();
+
         if (numberOfPlayers == 0) {
             throw new IllegalArgumentException("No players have been selected");
         }
@@ -61,6 +78,10 @@ public class ThreeCardPoker {
             counter ++;
         }
         List<Player> players =  game.determineTheWinner();
+        return players;
+    }
+
+    void displayResults(List<Player> players) {
         int s = players.size();
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < s; i++) {
