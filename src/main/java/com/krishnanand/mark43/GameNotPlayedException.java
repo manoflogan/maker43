@@ -6,7 +6,10 @@ package com.krishnanand.mark43;
  */
 public class GameNotPlayedException extends RuntimeException {
 
-    GameNotPlayedException() {
+    /**
+     * Root constructor.
+     */
+    public GameNotPlayedException() {
         super("The game could not be played as the test files could not be loaded.");
     }
 }
