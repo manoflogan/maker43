@@ -2,6 +2,7 @@
 package com.krishnanand.mark43;
 
 import java.io.InputStream;
+import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 import org.testng.Assert;
@@ -92,6 +93,7 @@ public class ThreeCardPokerTest {
         String filePath = new StringBuilder(System.getProperty("user.dir")).append("/")
             .append("src/test/resources").toString();
         List<String> allFiles = ThreeCardPoker.getFileListFromDirectory(filePath);
+        Collections.sort(allFiles);
         Assert.assertEquals(
             allFiles.toArray(new String[0]),
             new String[] {"poker", "testng.xml"});
