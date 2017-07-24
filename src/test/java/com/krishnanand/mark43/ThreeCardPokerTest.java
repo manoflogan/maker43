@@ -36,24 +36,38 @@ public class ThreeCardPokerTest {
         this.runThreeGame("HighCard.txt");
     }
 
+    @Test
+    public void testMultipleWinnersFileTest() throws Exception {
+        this.runThreeGame("MultipleWinners.txt");
+    }
+
     private void runThreeGame(String file) throws Exception {
         try(InputStream is =
             ClassLoader.getSystemResourceAsStream(file);
             Scanner scanner = new Scanner(is);) {
             List<Player> winningPlayers =  this.threeCardPoker.playGame(scanner);
             // Get the output from the file.
-            int n = 100; // Arbitarily large number.
+            String[] strs = new String[0];
             while(scanner.hasNext()) {
+                String str = scanner.nextLine();
+                if (str.isEmpty()) {
+                    continue;
+                }
+                strs =  str.split( " ");
+                break;
+            }
+            Assert.assertEquals(winningPlayers.size(), strs.length);
+            for (int i = 0; i < strs.length; i++) {
                 try {
-                    n = Integer.parseInt(scanner.nextLine(), 10);
-                    break;
+                    int n = Integer.parseInt(strs[i], 10);
+                    Player player = winningPlayers.get(i);
+                    Assert.assertEquals(player.getPlayerNumber(), n);
                 } catch (NumberFormatException nfe) {
                     // Ignore.
                 }
             }
-            Assert.assertEquals(winningPlayers.size(), 1);
-            Player player = winningPlayers.get(0);
-            Assert.assertEquals(player.getPlayerNumber(), n);
+
+
         }
     }
 }
