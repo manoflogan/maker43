@@ -28,22 +28,84 @@ public class ThreeCardPokerTest {
 
     @Test
     public void testPairFileTest() throws Exception {
-        this.runThreeGame("PairFile.txt");
+        this.runThreeGame("poker/PairFile.txt");
     }
 
     @Test
     public void testHighCardFileTest() throws Exception {
-        this.runThreeGame("HighCard.txt");
+        this.runThreeGame("poker/HighCard.txt");
     }
 
     @Test
     public void testMultipleWinnersFileTest() throws Exception {
-        this.runThreeGame("MultipleWinners.txt");
+        this.runThreeGame("poker/MultipleWinners.txt");
     }
 
+    @Test
+    public void testLoadContentsFromFile() throws Exception {
+        String filename =
+            this.getClass().getClassLoader().getResource("poker/HighCard.txt").getFile();
+        try(InputStream is = this.threeCardPoker.loadContentsFromFilePath(filename);) {
+            Assert.assertNotNull(is);
+        }
+    }
+
+    @Test(expectedExceptions = PokerFileNotFoundException.class,
+        expectedExceptionsMessageRegExp = "^The poker file  was not found.$")
+    public void testLoadContentsFromFile_throwsException() throws Exception {
+        this.threeCardPoker.loadContentsFromFilePath("");
+    }
+
+    @Test
+    public void testStartTheGame() throws Exception {
+        String filePath = new StringBuilder(System.getProperty("user.dir")).append("/")
+            .append("src/test/resources/poker/HighCard.txt").toString();
+        Assert.assertTrue(this.threeCardPoker.startTheGame(filePath));
+    }
+
+    @Test(expectedExceptions = PokerFileNotFoundException.class,
+        expectedExceptionsMessageRegExp = "^The poker file test was not found.$")
+    public void testStartTheGame_throwsException() throws Exception {
+        this.threeCardPoker.startTheGame("test");
+    }
+
+    @Test
+    public void testIsValid() throws Exception {
+        String[] filePath = new String[] {"src/test/resources"};
+        Assert.assertTrue(ThreeCardPoker.isValid(filePath));
+    }
+
+    @Test(expectedExceptions = IllegalArgumentException.class,
+        expectedExceptionsMessageRegExp = "^The implementation requires a file directory as an argument.$")
+    public void testIsValid_FailsForNullArray() throws Exception {
+        Assert.assertTrue(ThreeCardPoker.isValid(null));
+    }
+
+    @Test(expectedExceptions = IllegalArgumentException.class,
+        expectedExceptionsMessageRegExp = "^The implementation requires a file directory as an argument.$")
+    public void testIsValid_FailsForEmptyArray() throws Exception {
+        Assert.assertTrue(ThreeCardPoker.isValid(new String[0]));
+    }
+
+    @Test
+    public void testListFiles() throws Exception {
+        String filePath = new StringBuilder(System.getProperty("user.dir")).append("/")
+            .append("src/test/resources").toString();
+        List<String> allFiles = ThreeCardPoker.getFileListFromDirectory(filePath);
+        Assert.assertEquals(
+            allFiles.toArray(new String[0]),
+            new String[] {"poker", "testng.xml"});
+    }
+
+    @Test
+    public void testInitiate() throws Exception {
+        Assert.assertTrue(ThreeCardPoker.initiate(new String[]{"src/test/resources/poker"}));
+
+    }
+
+
     private void runThreeGame(String file) throws Exception {
-        try(InputStream is =
-            ClassLoader.getSystemResourceAsStream(file);
+        try(InputStream is = ClassLoader.getSystemResourceAsStream(file);
             Scanner scanner = new Scanner(is);) {
             List<Player> winningPlayers =  this.threeCardPoker.playGame(scanner);
             // Get the output from the file.
@@ -67,8 +129,6 @@ public class ThreeCardPokerTest {
                     // Ignore.
                 }
             }
-
-
         }
     }
 }
