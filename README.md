@@ -1,5 +1,8 @@
+[![Build
+Status](https://travis-ci.org/manoflogan/maker43.png)](https://travis-ci.org/manoflogan/maker43)
+
 To play the poker game from the file, the players need to execute the game as follows. To run the
-game, you need to have the following softwares installed on your system
+game, you need to have the following softwares installed on your system.
 
 1. Java 8
 2. Maven
@@ -29,7 +32,8 @@ In this archive, the sample tests are available in the ```tests``` directory rel
 archive. So the example becomes
 
 ```
-mvn clean install && java -jar target/mark43-1.0-SNAPSHOT.jar tests
+mvn clean install
+java -jar target/mark43-1.0-SNAPSHOT.jar tests
 ```
 
 
